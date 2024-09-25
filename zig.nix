@@ -17,6 +17,7 @@
         in
         with pkgs;
         {
+          LD_LIBRARY_PATH = lib.makeLibraryPath buildInputs;
           devShells.default = mkShell {
             inherit buildInputs nativeBuildInputs;
           };

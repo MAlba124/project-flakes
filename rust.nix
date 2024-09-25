@@ -1,5 +1,9 @@
 {
   inputs = {
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs = { self, nixpkgs, flake-utils }:
@@ -10,12 +14,14 @@
             inherit system;
           };
           nativeBuildInputs = with pkgs; [
-            gcc
-            gdb
-            gnumake
-            binutils
-            valgrind
-            clang-tools
+            (fenix.complete.withComponents [
+              "cargo"
+              "clippy"
+              "rust-src"
+              "rustc"
+              "rustfmt"
+            ])
+            rust-analyzer-nightly
           ];
           buildInputs = with pkgs; [];
         in
